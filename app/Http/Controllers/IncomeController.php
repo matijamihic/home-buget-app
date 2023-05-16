@@ -41,7 +41,6 @@ class IncomeController extends Controller
     public function store(CreateIncomeRequest $request, IncomeService $incomeService)
     {
         $data = $request->toArray();
-        $data['user_id'] = auth()->id();
 
         $income = $incomeService->createIncome($data);
 
@@ -57,9 +56,7 @@ class IncomeController extends Controller
      */
     public function update($id, UpdateIncomeRequest $request, IncomeService $incomeService)
     {
-        $income = Income::findOrFail($id);
         $data = $request->toArray();
-        $data['user_id'] = auth()->id();
 
         $income = $incomeService->updateIncome($data, $id);
 

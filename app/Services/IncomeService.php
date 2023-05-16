@@ -6,7 +6,7 @@ use App\Models\Income;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
 
-class IncomeService
+class IncomeService extends WalletService
 {
     /**
      * Create a new income and update the wallet balance.
@@ -16,14 +16,14 @@ class IncomeService
      */
     public function createIncome(array $data)
     {
+        $data["user_id"] = Auth::id();
+
         $income = Income::create($data);
 
-        $user_id = Auth::id();
-
         $amount = $data['amount'];
-        $wallet = Wallet::where('user_id', $user_id)->first();
-        $wallet->balance += $amount;
-        $wallet->save();
+        $wallet = Wallet::where('user_id', Auth::id())->first();
+
+        $this->updateWalletBalance($wallet, $amount);
 
         return $income;
     }
@@ -36,17 +36,15 @@ class IncomeService
      */
     public function updateIncome(array $data, $incomeId)
     {
-        $income = Income::findOrFail($incomeId);
-        $wallet = Wallet::where('user_id', $income->user_id)->first();
-
-        $wallet->balance -= $income->amount;
-        $wallet->save();
-
+        $income = Income::where('user_id', Auth::id())->findOrFail($incomeId);        
+        $wallet = Wallet::where('user_id', Auth::id())->findOrFail();
+    
+        $this->updateWalletBalance($wallet, -$income->amount);
+    
         $income->update($data);
-
-        $wallet->balance += $income->amount;
-        $wallet->save();
-
+    
+        $this->updateWalletBalance($wallet, $income->amount);
+    
         return $income;
     }
 
@@ -58,8 +56,9 @@ class IncomeService
      */
     public function deleteIncome($incomeId)
     {
-        $income = Income::findOrFail($incomeId);
-        $wallet = Wallet::where('user_id', $income->user_id)->first();
+        $income = Income::where('user_id', Auth::id())->findOrFail($incomeId);
+        $wallet = Wallet::where('user_id', Auth::id())->first();
+
         $wallet->balance -= $income->amount;
         $wallet->save();
         $income->delete();

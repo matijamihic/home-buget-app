@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseController;
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -24,6 +27,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/{income}', [IncomeController::class, 'show']);
         Route::put('/{income}', [IncomeController::class, 'update']);
         Route::delete('/{income}', [IncomeController::class, 'destroy']);
+    });
+
+    Route::prefix('expense-categories')->group(function () {
+        Route::get('/', [ExpenseCategoryController::class, 'index']);
+        Route::get('/{id}', [ExpenseCategoryController::class, 'show']);
+        Route::post('/', [ExpenseCategoryController::class, 'store']);
+        Route::put('/{id}', [ExpenseCategoryController::class, 'update']);
+        Route::delete('/{id}', [ExpenseCategoryController::class, 'destroy']);
+    });
+
+    Route::prefix('expenses')->group(function () {
+        Route::get('/', [ExpenseController::class, 'index']);
+        Route::get('/{id}', [ExpenseController::class, 'show']);
+        Route::post('/', [ExpenseController::class, 'store']);
+        Route::put('/{id}', [ExpenseController::class, 'update']);
+        Route::delete('/{id}', [ExpenseController::class, 'destroy']);
     });
 
     Route::get('/wallet', [WalletController::class, 'show']);

@@ -1,9 +1,10 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncomesTable extends Migration
+class CreateExpenseCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +13,14 @@ class CreateIncomesTable extends Migration
      */
     public function up()
     {
-        Schema::create('incomes', function (Blueprint $table) {
+        Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('description');
-            $table->decimal('amount', 10, 2);
-            $table->date('date')->default(now());
-            $table->timestamps();
-
-            // Define foreign key constraint
+            $table->string('name');
+            $table->unsignedBigInteger('user_id')->nullable();
+            
+            // modifu above foreign line if user is deleted all custom categories are deleted
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 
@@ -32,6 +31,6 @@ class CreateIncomesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incomes');
+        Schema::dropIfExists('expense_categories');
     }
 }
