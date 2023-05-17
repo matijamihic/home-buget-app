@@ -7,6 +7,7 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ReportController;
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -14,10 +15,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
-});
-
-Route::middleware('auth')->post('/user', function (Request $request) {
-    return $request->user();
 });
 
 Route::middleware('auth')->group(function () {
@@ -45,7 +42,19 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [ExpenseController::class, 'destroy']);
     });
 
+    Route::prefix('reports')->group(function () {
+        Route::get('/expenses/{startDate}/{endDate}/{period?}', [ReportController::class, 'expenseReport']);
+        Route::get('/incomes/{startDate}/{endDate}/{period?}', [ReportController::class, 'incomeReport']);
+        Route::get('/money-left/{startDate}/{endDate}/{period?}', [ReportController::class, 'moneyLeftReport']);
+        Route::get('/expenses/search', [ReportController::class, 'searchExpenses']);
+        Route::get('/incomes/search', [ReportController::class, 'searchIncomes']);
+    });
+
     Route::get('/wallet', [WalletController::class, 'show']);
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
 
 Route::fallback(function(){
