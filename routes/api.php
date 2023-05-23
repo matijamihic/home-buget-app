@@ -59,5 +59,5 @@ Route::middleware('auth')->group(function () {
 
 Route::fallback(function(){
     return response()->json([
-        'message' => 'Page Not Found'], 404);
+        'message' => 'Route Not Found'], 404);
 });

@@ -16,16 +16,14 @@ class IncomeService extends WalletService
      */
     public function createIncome(array $data)
     {
-        $data["user_id"] = Auth::id();
-
-        $income = Income::create($data);
+        Income::create($data);
 
         $amount = $data['amount'];
         $wallet = Wallet::where('user_id', Auth::id())->first();
 
         $this->updateWalletBalance($wallet, $amount);
 
-        return $income;
+        return "Income deleted successfully.";
     }
 
     /**
@@ -36,8 +34,8 @@ class IncomeService extends WalletService
      */
     public function updateIncome(array $data, $incomeId)
     {
-        $income = Income::where('user_id', Auth::id())->findOrFail($incomeId);        
-        $wallet = Wallet::where('user_id', Auth::id())->findOrFail();
+        $income = Income::where('user_id', $data["user_id"])->findOrFail($incomeId);        
+        $wallet = Wallet::where('user_id', $data["user_id"])->first();
     
         $this->updateWalletBalance($wallet, -$income->amount);
     
@@ -45,7 +43,7 @@ class IncomeService extends WalletService
     
         $this->updateWalletBalance($wallet, $income->amount);
     
-        return $income;
+        return "Income deleted successfully.";
     }
 
     /**
@@ -54,10 +52,10 @@ class IncomeService extends WalletService
      * @param  int  $incomeId
      * @return void
      */
-    public function deleteIncome($incomeId)
+    public function deleteIncome($incomeId, $userId)
     {
-        $income = Income::where('user_id', Auth::id())->findOrFail($incomeId);
-        $wallet = Wallet::where('user_id', Auth::id())->first();
+        $income = Income::where('user_id', $userId)->findOrFail($incomeId);
+        $wallet = Wallet::where('user_id', $userId)->first();
 
         $wallet->balance -= $income->amount;
         $wallet->save();

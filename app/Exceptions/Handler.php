@@ -5,6 +5,9 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -36,6 +39,13 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ModelNotFoundException) {
             return response()->json([
                 'error' => 'Entry for '.str_replace('App', '', $exception->getModel()).' not found'], 404);
+        }
+
+        if ($exception instanceof RouteNotFoundException) {
+            if(($exception->getMessage()) === 'Route [login] not defined.') {
+                
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
         }
     
         return parent::render($request, $exception);

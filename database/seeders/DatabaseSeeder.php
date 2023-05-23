@@ -143,7 +143,7 @@ class DatabaseSeeder extends Seeder
             $currentDate->addMonth();
         }
  
-        $balance = 2000 - $expenses_sum;
+        $balance = $incomeSum - $expenses_sum;
         \App\Models\Wallet::factory()->create([
             'user_id' => 1,
             'balance' => $balance,

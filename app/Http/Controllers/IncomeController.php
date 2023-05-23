@@ -7,26 +7,33 @@ use App\Http\Requests\CreateIncomeRequest;
 use App\Http\Requests\UpdateIncomeRequest;
 use Illuminate\Http\JsonResponse;
 use App\Services\IncomeService;
+use Illuminate\Support\Facades\Auth;
 
 class IncomeController extends Controller
 {
+    private $userId;
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->userId = auth()->id();
+    }
+
     /**
      * Display a listing of the incomes.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        $user_id = auth()->id();
-        $incomes = Income::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+        $incomes = Income::where('user_id', $this->userId)->orderBy('created_at', 'desc')->get();
 
         return response()->json($incomes);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
-        $user_id = auth()->id();
-        $income = Income::where('user_id', $user_id)->findOrFail($id);
+        $income = Income::where('user_id', $this->userId)->findOrFail($id);
 
         return response()->json($income);
     }
@@ -38,9 +45,10 @@ class IncomeController extends Controller
      * @param  IncomeService  $incomeService
      * @return JsonResponse
      */
-    public function store(CreateIncomeRequest $request, IncomeService $incomeService)
+    public function store(CreateIncomeRequest $request, IncomeService $incomeService): JsonResponse
     {
         $data = $request->toArray();
+        $data["user_id"] = $this->userId;
 
         $income = $incomeService->createIncome($data);
 
@@ -54,9 +62,10 @@ class IncomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update($id, UpdateIncomeRequest $request, IncomeService $incomeService)
+    public function update($id, UpdateIncomeRequest $request, IncomeService $incomeService): JsonResponse
     {
         $data = $request->toArray();
+        $data["user_id"] = $this->userId;
 
         $income = $incomeService->updateIncome($data, $id);
 
@@ -70,10 +79,10 @@ class IncomeController extends Controller
      * @param  IncomeService  $incomeService
      * @return JsonResponse
      */
-    public function destroy($id, IncomeService $incomeService)
+    public function destroy($id, IncomeService $incomeService): JsonResponse
     {
-        $incomeService->deleteIncome($id);
+        $response = $incomeService->deleteIncome($id, $this->userId);
 
-        return response()->json(['message' => 'Income deleted successfully']);
+        return response()->json($response, 204);
     }
 }
