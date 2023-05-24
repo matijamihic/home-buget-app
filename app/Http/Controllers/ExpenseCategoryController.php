@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseCategory;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateExpenseCategoryRequest;
 use App\Http\Requests\UpdateExpenseCategoryRequest;

@@ -2,37 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateExpenseCategoryRequest;
+use App\Http\Requests\CreateExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
-use App\Models\Income;
 use App\Services\ExpenseService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
+    private $userId;
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->userId = auth()->id();
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        $expense = Expense::where('user_id', Auth::id())
-            ->get();
+        $expenses = Expense::where('user_id', $this->userId)->orderBy('created_at', 'desc')->get();
 
-        return response()->json($expense);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(CreateExpenseCategoryRequest $request, ExpenseService $expenseService)
-    {
-        $data = $request->toArray();
-
-        $income = $expenseService->createExpense($data);
-
-        return response()->json($income, 201);
+        return response()->json($expenses);
     }
 
     /**
@@ -40,18 +33,22 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        $user_id = auth()->id();
-        $expense = Expense::where('user_id', $user_id)->findOrFail($id);
+        $expense = Expense::where('user_id', $this->userId)->findOrFail($id);
 
         return response()->json($expense);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      */
-    public function edit(Expense $expense)
+    public function store(CreateExpenseRequest $request, ExpenseService $expenseService)
     {
-        //
+        $data = $request->toArray();
+        $data["user_id"] = $this->userId;
+
+        $income = $expenseService->createExpense($data);
+
+        return response()->json($income, 201);
     }
 
     /**
@@ -60,6 +57,7 @@ class ExpenseController extends Controller
     public function update($id, UpdateExpenseRequest $request, ExpenseService $expenseService)
     {
         $data = $request->toArray();
+        $data["user_id"] = $this->userId;
 
         $expense = $expenseService->updateExpense($data, $id);
 
@@ -71,8 +69,8 @@ class ExpenseController extends Controller
      */
     public function destroy($id, ExpenseService $expenseService)
     {
-        $expenseService->deleteExpense($id);
+        $response = $expenseService->deleteExpense($id);
 
-        return response()->json(['message' => 'Expense deleted successfully']);
+        return response()->json($response, 204);
     }
 }

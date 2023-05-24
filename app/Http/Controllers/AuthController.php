@@ -23,10 +23,11 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
+
         if (!$token) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Unauthorized',
+                'message' => 'Username or password is incorrect',
             ], 401);
         }
 

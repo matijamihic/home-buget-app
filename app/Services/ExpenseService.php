@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Expense;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use App\Models\ExpenseCategory;
 
 class ExpenseService extends WalletService
 {
@@ -17,16 +17,14 @@ class ExpenseService extends WalletService
      */
     public function createExpense(array $data)
     {
-        $data["user_id"] = Auth::id();
+        Expense::create($data);
 
-        $expense = Expense::create($data);
-    
         $amount = $data['amount'];
-        $wallet = Wallet::where('user_id', Auth::id())->first();
-    
-        $this->updateWalletBalance($wallet, $amount);
-    
-        return $expense;
+        $wallet = Wallet::where('user_id', $data['user_id'])->first();
+
+        $this->updateWalletBalance($wallet, -$amount);
+
+        return "Expense created successfully.";
     }
 
     /**
@@ -39,14 +37,14 @@ class ExpenseService extends WalletService
     {
         $expense = Expense::where('user_id', Auth::id())->findOrFail($expenseId);
         $wallet = Wallet::where('user_id', Auth::id())->first();
-    
+
         $this->updateWalletBalance($wallet, $expense->amount);
-    
+
         $expense->update($data);
-    
+
         $this->updateWalletBalance($wallet, -$expense->amount);
-    
-        return $expense;
+
+        return "Expense updated successfully.";
     }
 
     /**
@@ -59,11 +57,11 @@ class ExpenseService extends WalletService
     {
         $expense = Expense::where('user_id', Auth::id())->findOrFail($expenseId);
         $wallet = Wallet::where('user_id', Auth::id())->first();
-    
+
         $this->updateWalletBalance($wallet, $expense->amount);
 
         $expense->delete();
-    
+
         return "Expense deleted successfully.";
     }
 }

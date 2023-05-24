@@ -7,7 +7,6 @@ use App\Http\Requests\CreateIncomeRequest;
 use App\Http\Requests\UpdateIncomeRequest;
 use Illuminate\Http\JsonResponse;
 use App\Services\IncomeService;
-use Illuminate\Support\Facades\Auth;
 
 class IncomeController extends Controller
 {
@@ -31,6 +30,9 @@ class IncomeController extends Controller
         return response()->json($incomes);
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show($id): JsonResponse
     {
         $income = Income::where('user_id', $this->userId)->findOrFail($id);

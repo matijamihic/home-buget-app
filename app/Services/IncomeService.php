@@ -23,7 +23,7 @@ class IncomeService extends WalletService
 
         $this->updateWalletBalance($wallet, $amount);
 
-        return "Income deleted successfully.";
+        return "Income created successfully.";
     }
 
     /**
@@ -43,7 +43,7 @@ class IncomeService extends WalletService
     
         $this->updateWalletBalance($wallet, $income->amount);
     
-        return "Income deleted successfully.";
+        return "Income updated successfully.";
     }
 
     /**
@@ -57,8 +57,8 @@ class IncomeService extends WalletService
         $income = Income::where('user_id', $userId)->findOrFail($incomeId);
         $wallet = Wallet::where('user_id', $userId)->first();
 
-        $wallet->balance -= $income->amount;
-        $wallet->save();
+        $this->updateWalletBalance($wallet, -$income->amount);
+
         $income->delete();
 
         return "Income deleted successfully.";

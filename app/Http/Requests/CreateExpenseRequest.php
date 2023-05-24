@@ -24,7 +24,9 @@ class CreateExpenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string',
+            'name' => 'required|string',
+            'amount' => 'required|numeric',
+            'category_id' => 'required|numeric',
         ];
     }
 }
