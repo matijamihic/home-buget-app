@@ -1,6 +1,9 @@
 1. Start the app with
 
+composer install
 php artisan serve
+
+if problems visit
 
 
 2. Database:
@@ -33,3 +36,4 @@ TODOs:
 - create resource classes
 - improve error handling
 - more tests
+- improve swagger docs
