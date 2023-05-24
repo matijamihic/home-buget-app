@@ -17,3 +17,7 @@ answer "yes" on prompt for creating a new database if needed
 then run: 
 
 php artisan db:seed
+
+for testing
+php artisan db:seed --env=testing
+php artisan test --env=testing
