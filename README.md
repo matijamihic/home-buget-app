@@ -27,3 +27,9 @@ storage/api-docs/api-docs.json
 
 regenarate documentation:
 php artisan l5-swagger:generate
+
+TODOs:
+- improve requests validation
+- create resource classes
+- improve error handling
+- more tests
