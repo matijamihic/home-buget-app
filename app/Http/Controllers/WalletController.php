@@ -7,9 +7,12 @@ use App\Models\Wallet;
 class WalletController extends Controller
 {
     /**
-     * Display a state of the wallet.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/wallet",
+     *     summary="Get wallet information",
+     *     @OA\Response(response="200", description="Wallet information"),
+     *     security={{"bearerAuth": {}}}
+     * )
      */
     public function show()
     {

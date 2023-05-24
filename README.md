@@ -18,6 +18,12 @@ then run:
 
 php artisan db:seed
 
-for testing
+3. testing
 php artisan db:seed --env=testing
 php artisan test --env=testing
+
+4. documentation
+storage/api-docs/api-docs.json
+
+regenarate documentation:
+php artisan l5-swagger:generate

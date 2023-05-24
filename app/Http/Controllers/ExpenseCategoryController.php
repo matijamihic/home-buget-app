@@ -10,9 +10,12 @@ use App\Http\Requests\UpdateExpenseCategoryRequest;
 class ExpenseCategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/expense-categories",
+     *     summary="Get a list of expense categories",
+     *     @OA\Response(response="200", description="List of expense categories")
+     * )
      */
-
     public function index()
     {
         $userId = Auth::id();
@@ -26,7 +29,19 @@ class ExpenseCategoryController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
+     * @OA\Post(
+     *     path="/expense-categories",
+     *     summary="Create a new expense category",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string"),
+     *         )
+     *     ),
+     *     @OA\Response(response="200", description="Expense category created"),
+     *     @OA\Response(response="400", description="Expense category already exists"),
+     *     @OA\Response(response="422", description="Validation error")
+     * )
      */
     public function store(CreateExpenseCategoryRequest $request)
     {
@@ -50,7 +65,19 @@ class ExpenseCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/expense-categories/{id}",
+     *     summary="Get details of a specific expense category",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the expense category",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response="200", description="Expense category details"),
+     *     @OA\Response(response="404", description="Expense category not found")
+     * )
      */
     public function show($id, ExpenseCategory $expenseCategory)
     {
@@ -63,7 +90,26 @@ class ExpenseCategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/expense-categories/{id}",
+     *     summary="Update a specific expense category",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the expense category",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string"),
+     *         )
+     *     ),
+     *     @OA\Response(response="200", description="Expense category updated"),
+     *     @OA\Response(response="404", description="Expense category not found"),
+     *     @OA\Response(response="422", description="Validation error")
+     * )
      */
     public function update($id, UpdateExpenseCategoryRequest $request)
     {
@@ -77,7 +123,19 @@ class ExpenseCategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/expense-categories/{id}",
+     *     summary="Delete a specific expense category",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the expense category",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response="204", description="Expense category deleted"),
+     *     @OA\Response(response="404", description="Expense category not found")
+     * )
      */
     public function destroy($id, ExpenseCategory $expenseCategory)
     {

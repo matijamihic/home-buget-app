@@ -1,0 +1,702 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your API Title",
+        "description": "Your API description",
+        "contact": {
+            "email": "your-email@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "summary": "Authenticate user",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "summary": "Register a new user",
+                "operationId": "0903f2e0df1a8857bee538fc055417f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User registered successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "summary": "Logout user",
+                "operationId": "68a6108af04af5e3bc1ea68a6c6f1299",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
+                    }
+                }
+            }
+        },
+        "/refresh": {
+            "post": {
+                "summary": "Refresh user token",
+                "operationId": "0c3ea3c61aed881016646810460499e9",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully"
+                    }
+                }
+            }
+        },
+        "/expense-categories": {
+            "get": {
+                "summary": "Get a list of expense categories",
+                "operationId": "3a57961c189fa263f2f2ee032139f434",
+                "responses": {
+                    "200": {
+                        "description": "List of expense categories"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new expense category",
+                "operationId": "e9c91d5e2ba41405bebcb5f3781cb86a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expense category created"
+                    },
+                    "400": {
+                        "description": "Expense category already exists"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/expense-categories/{id}": {
+            "get": {
+                "summary": "Get details of a specific expense category",
+                "operationId": "0715450f6ef6057c18e5a718092b64be",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the expense category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Expense category details"
+                    },
+                    "404": {
+                        "description": "Expense category not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a specific expense category",
+                "operationId": "b63dae36bfd9d298798693cad380466e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the expense category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expense category updated"
+                    },
+                    "404": {
+                        "description": "Expense category not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a specific expense category",
+                "operationId": "3ede5ddac795968a7e80a1e4494435db",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the expense category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Expense category deleted"
+                    },
+                    "404": {
+                        "description": "Expense category not found"
+                    }
+                }
+            }
+        },
+        "/expenses": {
+            "get": {
+                "summary": "Get a list of expenses",
+                "operationId": "36e62ecfbcfde37686ea63fe89d0c0c0",
+                "responses": {
+                    "200": {
+                        "description": "List of expenses"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new expense",
+                "operationId": "927e29ac31ae983af0a55ce5d487d554",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "property1": {
+                                        "type": "type1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Expense created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/expenses/{id}": {
+            "get": {
+                "summary": "Get details of a specific expense",
+                "operationId": "b8d5c673ecdbb6a51bea7ec7cc5d0e30",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the expense",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Expense details"
+                    },
+                    "404": {
+                        "description": "Expense not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a specific expense",
+                "operationId": "36a4200b139cad8582ff017bbdb5750e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the expense",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "property1": {
+                                        "type": "type1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expense updated"
+                    },
+                    "404": {
+                        "description": "Expense not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a specific expense",
+                "operationId": "b261a1443844b958952ae83b03fbbfa3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the expense",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Expense deleted"
+                    },
+                    "404": {
+                        "description": "Expense not found"
+                    }
+                }
+            }
+        },
+        "/incomes": {
+            "get": {
+                "summary": "Get all incomes",
+                "operationId": "68c947f4f4b1407943df0f86a84582ce",
+                "responses": {
+                    "200": {
+                        "description": "List of incomes"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new income",
+                "operationId": "c036d918866bb5db62083a4a050c80d6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Income created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/incomes/{id}": {
+            "get": {
+                "summary": "Get a specific income",
+                "operationId": "3f7bdae20e436918dfc171c484e2aef9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the income",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Income details"
+                    },
+                    "404": {
+                        "description": "Income not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a specific income",
+                "operationId": "4bff7a1416746a189298bb364d24ed78",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the income",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Income updated"
+                    },
+                    "404": {
+                        "description": "Income not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a specific income",
+                "operationId": "c6fe245d90f38f582a7a45fa9d6de21c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the income",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Income deleted"
+                    },
+                    "404": {
+                        "description": "Income not found"
+                    }
+                }
+            }
+        },
+        "/expense-report/{startDate}/{endDate}/{period}": {
+            "get": {
+                "summary": "Generate expense report",
+                "operationId": "a39b2e41c1ad152069220dfa56aac32c",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "in": "path",
+                        "description": "Start date of the report (YYYY-MM-DD)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "path",
+                        "description": "End date of the report (YYYY-MM-DD)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "period",
+                        "in": "path",
+                        "description": "Report period (monthly, weekly, daily, etc.)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Expense report generated successfully"
+                    }
+                }
+            }
+        },
+        "/income-report/{startDate}/{endDate}/{period}": {
+            "get": {
+                "summary": "Generate income report",
+                "operationId": "7fe1fcc916cead4498641892426a0cf4",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "in": "path",
+                        "description": "Start date of the report (YYYY-MM-DD)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "path",
+                        "description": "End date of the report (YYYY-MM-DD)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "period",
+                        "in": "path",
+                        "description": "Report period (monthly, weekly, daily, etc.)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Income report generated successfully"
+                    }
+                }
+            }
+        },
+        "/money-left-report/{startDate}/{endDate}/{period}": {
+            "get": {
+                "summary": "Generate money left report",
+                "operationId": "52748d01e3a95526c993ad45780b8b7a",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "in": "path",
+                        "description": "Start date of the report (YYYY-MM-DD)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "path",
+                        "description": "End date of the report (YYYY-MM-DD)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "period",
+                        "in": "path",
+                        "description": "Report period (monthly, weekly, daily, etc.)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Money left report generated successfully"
+                    }
+                }
+            }
+        },
+        "/search-expenses": {
+            "post": {
+                "summary": "Search expenses",
+                "operationId": "1537099337998341cd38ca740e93dd1c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "startDate": {
+                                        "type": "string",
+                                        "example": "2023-01-01"
+                                    },
+                                    "endDate": {
+                                        "type": "string",
+                                        "example": "2023-12-31"
+                                    },
+                                    "amount": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "amountMax": {
+                                        "type": "integer",
+                                        "example": 500
+                                    },
+                                    "expenseCategory": {
+                                        "type": "string",
+                                        "example": "food"
+                                    },
+                                    "expenseDescription": {
+                                        "type": "string",
+                                        "example": "restaurant"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expenses search results"
+                    }
+                }
+            }
+        },
+        "/search-incomes": {
+            "post": {
+                "summary": "Search incomes",
+                "operationId": "704406e3f713e80e28bd09da6b1aa9a1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "startDate": {
+                                        "type": "string",
+                                        "example": "2023-01-01"
+                                    },
+                                    "endDate": {
+                                        "type": "string",
+                                        "example": "2023-12-31"
+                                    },
+                                    "amount": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "amountMax": {
+                                        "type": "integer",
+                                        "example": 500
+                                    },
+                                    "incomeType": {
+                                        "type": "string",
+                                        "example": "salary"
+                                    },
+                                    "incomeDescription": {
+                                        "type": "string",
+                                        "example": "bonus"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Incomes search results"
+                    }
+                }
+            }
+        },
+        "/wallet": {
+            "get": {
+                "summary": "Get wallet information",
+                "operationId": "92884b373e354bacec5be74f2e046805",
+                "responses": {
+                    "200": {
+                        "description": "Wallet information"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -7,6 +7,19 @@ use App\Http\Requests\CreateIncomeRequest;
 use App\Http\Requests\UpdateIncomeRequest;
 use Illuminate\Http\JsonResponse;
 use App\Services\IncomeService;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(
+ *     title="Your API Title",
+ *     version="1.0.0",
+ *     description="Your API description",
+ *     @OA\Contact(
+ *         email="your-email@example.com"
+ *     )
+ * )
+ */
+
 
 class IncomeController extends Controller
 {
@@ -19,9 +32,11 @@ class IncomeController extends Controller
     }
 
     /**
-     * Display a listing of the incomes.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/incomes",
+     *     summary="Get all incomes",
+     *     @OA\Response(response="200", description="List of incomes")
+     * )
      */
     public function index(): JsonResponse
     {
@@ -31,7 +46,19 @@ class IncomeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/incomes/{id}",
+     *     summary="Get a specific income",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the income",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response="200", description="Income details"),
+     *     @OA\Response(response="404", description="Income not found")
+     * )
      */
     public function show($id): JsonResponse
     {
@@ -41,11 +68,21 @@ class IncomeController extends Controller
     }
 
     /**
-     * Store a newly created income in storage.
-     *
-     * @param  CreateIncomeRequest  $request
-     * @param  IncomeService  $incomeService
-     * @return JsonResponse
+     * @OA\Post(
+     *     path="/incomes",
+     *     summary="Create a new income",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Schema(
+     *                 @OA\Property(property="property1", type="string"),
+     *                 @OA\Property(property="property2", type="integer"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response="201", description="Income created"),
+     *     @OA\Response(response="422", description="Validation error")
+     * )
      */
     public function store(CreateIncomeRequest $request, IncomeService $incomeService): JsonResponse
     {
@@ -57,12 +94,30 @@ class IncomeController extends Controller
         return response()->json($income, 201);
     }
 
-
     /**
-     * Update the specified income.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *     path="/incomes/{id}",
+     *     summary="Update a specific income",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the income",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Schema(
+     *                 @OA\Property(property="property1", type="string"),
+     *                 @OA\Property(property="property2", type="integer"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response="200", description="Income updated"),
+     *     @OA\Response(response="404", description="Income not found"),
+     *     @OA\Response(response="422", description="Validation error")
+     * )
      */
     public function update($id, UpdateIncomeRequest $request, IncomeService $incomeService): JsonResponse
     {
@@ -75,11 +130,19 @@ class IncomeController extends Controller
     }
 
     /**
-     * Remove the specified income from storage.
-     *
-     * @param  int  $id
-     * @param  IncomeService  $incomeService
-     * @return JsonResponse
+     * @OA\Delete(
+     *     path="/incomes/{id}",
+     *     summary="Delete a specific income",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the income",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response="204", description="Income deleted"),
+     *     @OA\Response(response="404", description="Income not found")
+     * )
      */
     public function destroy($id, IncomeService $incomeService): JsonResponse
     {
