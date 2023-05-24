@@ -28,6 +28,9 @@ storage/api-docs/api-docs.json
 regenarate documentation:
 php artisan l5-swagger:generate
 
+5. postman collection
+POSTMAN: storage/api-docs/home-buget-app.postman_collection.json
+
 TODOs:
 - improve requests validation
 - create resource classes
