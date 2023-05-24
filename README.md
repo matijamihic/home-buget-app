@@ -3,9 +3,6 @@
 composer install
 php artisan serve
 
-if problems visit
-
-
 2. Database:
 
 is set to mysql
@@ -22,7 +19,7 @@ then run:
 php artisan db:seed
 
 3. testing
-php artisan db:seed --env=testing
+php artisan migrate --env=testing
 php artisan test --env=testing
 
 4. documentation
