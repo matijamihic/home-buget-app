@@ -9,18 +9,6 @@ use Illuminate\Http\JsonResponse;
 use App\Services\IncomeService;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Info(
- *     title="Your API Title",
- *     version="1.0.0",
- *     description="Your API description",
- *     @OA\Contact(
- *         email="your-email@example.com"
- *     )
- * )
- */
-
-
 class IncomeController extends Controller
 {
     private $userId;

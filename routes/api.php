@@ -8,18 +8,6 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ReportController;
-use OpenApi\Annotations as OA;
-
-/**
- * @OA\Info(
- *     title="Your API Title",
- *     version="1.0.0",
- *     description="Your API description",
- *     @OA\Contact(
- *         email="your-email@example.com"
- *     )
- * )
- */
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
