@@ -24,8 +24,8 @@ class CreateIncomeRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'string',
-            'amount' => 'numeric',
+            'description' => 'string|required|max:255',
+            'amount' => 'numeric|required|between:0.01,999999.99',
         ];
     }
 }
