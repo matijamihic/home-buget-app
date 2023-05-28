@@ -32,7 +32,7 @@ class ExpenseServiceTest extends TestCase
         $expenseData = [
             "description" => "Gas",
             "amount" => 88,
-            "expense_category_id" => 1,
+            "expense_category_id" => $expenseCategory->id,
             'user_id' => $user->id,
         ];
 
