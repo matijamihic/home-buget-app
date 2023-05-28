@@ -63,8 +63,8 @@ class IncomeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Schema(
-     *                 @OA\Property(property="property1", type="string"),
-     *                 @OA\Property(property="property2", type="integer"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="amount", type="number"),
      *             )
      *         )
      *     ),
