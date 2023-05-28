@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseCategory;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateExpenseCategoryRequest;
 use App\Http\Requests\UpdateExpenseCategoryRequest;
+use App\Services\ExpenseCategoryService;
 
 class ExpenseCategoryController extends Controller
 {
+    private $userId;
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->userId = auth()->id();
+    }
+
     /**
      * @OA\Get(
      *     path="/expense-categories",
@@ -18,9 +26,7 @@ class ExpenseCategoryController extends Controller
      */
     public function index()
     {
-        $userId = Auth::id();
-
-        $expenseCategories = ExpenseCategory::where('user_id', $userId)
+        $expenseCategories = ExpenseCategory::where('user_id', $this->userId)
             ->orWhereNull('user_id')
             ->get();
 
@@ -43,23 +49,13 @@ class ExpenseCategoryController extends Controller
      *     @OA\Response(response="422", description="Validation error")
      * )
      */
-    public function store(CreateExpenseCategoryRequest $request)
+    public function store(CreateExpenseCategoryRequest $request, ExpenseCategoryService $expenseCategoryService)
     {
         $data = $request->toArray();
-        $data['user_id'] = Auth::id();
+        $data['user_id'] = $this->userId;
         $data['name'] = strtolower($data['name']);
 
-        $expenseCcategory = ExpenseCategory::where('user_id', $data['user_id'])
-            ->where('name', $data['name'])
-            ->first();
-
-        if($expenseCcategory) {
-            return response()->json([
-                'message' => 'Expense category already exists'
-            ], 400);
-        }
-
-        $expenseCategory = ExpenseCategory::create($data);
+        $expenseCategory = $expenseCategoryService->createExpenseCategory($data);
 
         return response()->json($expenseCategory, 200);
     }
@@ -81,8 +77,7 @@ class ExpenseCategoryController extends Controller
      */
     public function show($id, ExpenseCategory $expenseCategory)
     {
-        $user_id = auth()->id();
-        $expenseCategory = ExpenseCategory::where('user_id', $user_id)
+        $expenseCategory = ExpenseCategory::where('user_id', $this->userId)
             ->orWhereNull('user_id')
             ->findOrFail($id);
 
@@ -115,7 +110,7 @@ class ExpenseCategoryController extends Controller
     {
         $data = $request->toArray();
 
-        $expenseCategory = ExpenseCategory::where('user_id', Auth::id())->findOrFail($id);
+        $expenseCategory = ExpenseCategory::where('user_id', $this->userId)->findOrFail($id);
         
         $expenseCategory->update($data);
 
@@ -137,10 +132,10 @@ class ExpenseCategoryController extends Controller
      *     @OA\Response(response="404", description="Expense category not found")
      * )
      */
-    public function destroy($id, ExpenseCategory $expenseCategory)
+    public function destroy($id, ExpenseCategoryService $expenseCategoryService)
     {
-        $expenseCategory = ExpenseCategory::where('user_id', Auth::id())->findOrFail($id);
+        $expenseCategoryService = new ExpenseCategoryService();
 
-        $expenseCategory->delete();
+        $expenseCategoryService->deleteExpenseCategory($id, $this->userId);
     }
 }
